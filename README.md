@@ -1,6 +1,7 @@
 # dataStructurePerformances
-This project is a test to calculate differences between different data structure types.
-The example test result is;
+Performance benchmarks comparing vector, array, and list data structures.
+
+Example results:
 
 Vector filling time (uS) : 485
 
