@@ -1,5 +1,6 @@
-# dataStructurePerformances
-Performance benchmarks comparing vector, array, and list data structures.
+# data-structure-benchmarks
+
+Performance benchmarks for vector, array, and list in C++.
 
 Example results:
 
