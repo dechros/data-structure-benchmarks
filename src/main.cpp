@@ -35,96 +35,77 @@ unsigned long timeIntervalVectorInsert = 0;
 unsigned long timeIntervalArrayInsert = 0;
 unsigned long timeIntervalListInsert = 0;
 
-/**
- * @brief Setup function that works only when the ECU is restarted.
- */
 void setup()
 {
-    Serial.begin(9600); /* Set the serial communication spped for the MCU. */
+    Serial.begin(9600);
 
-    /**
-     * @note Test time requirements for filling different type of storages.
-     */
-
-    timeMicroSecFirst = micros();       /* Get the time before filling the vector. */
-    for (int i = 0; i < TEST_SIZE; i++) /* Fill the test vector. */
+    timeMicroSecFirst = micros();
+    for (int i = 0; i < TEST_SIZE; i++)
     {
         testVector.push_back(i);
     }
     timeMicroSecLast = micros();
-    timeIntervalVectorFill = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to fill the vector. */
+    timeIntervalVectorFill = timeMicroSecLast - timeMicroSecFirst;
 
-    timeMicroSecFirst = micros();                       /* Get the time before filling the array. */
-    testArray = (int *)malloc(sizeof(int) * TEST_SIZE); /* C style memory allocation. */
-    for (int i = 0; i < TEST_SIZE; i++)                 /* Fill the test array. */
+    timeMicroSecFirst = micros();
+    testArray = (int *)malloc(sizeof(int) * TEST_SIZE);
+    for (int i = 0; i < TEST_SIZE; i++)
     {
         testArray[i] = i;
     }
     timeMicroSecLast = micros();
-    timeIntervalArrayFill = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to fill the array. */
+    timeIntervalArrayFill = timeMicroSecLast - timeMicroSecFirst;
 
-    timeMicroSecFirst = micros();       /* Get the time before filling the list. */
-    for (int i = 0; i < TEST_SIZE; i++) /* Fill the test list. */
+    timeMicroSecFirst = micros();
+    for (int i = 0; i < TEST_SIZE; i++)
     {
         testList.push_back(i);
     }
     timeMicroSecLast = micros();
-    timeIntervalListFill = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to fill the list. */
+    timeIntervalListFill = timeMicroSecLast - timeMicroSecFirst;
 
-    /**
-     * @note Test time requirements of access time for different type of storages.
-     */
-
-    timeMicroSecFirst = micros();       /* Get the time before accessing the vector. */
-    for (int i = 0; i < TEST_SIZE; i++) /* Get the elements of the test vector. */
+    timeMicroSecFirst = micros();
+    for (int i = 0; i < TEST_SIZE; i++)
     {
         testValue = testVector[i];
     }
     timeMicroSecLast = micros();
-    timeIntervalVectorAccess = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to access the vector. */
+    timeIntervalVectorAccess = timeMicroSecLast - timeMicroSecFirst;
 
-    timeMicroSecFirst = micros();       /* Get the time before accessing the array. */
-    for (int i = 0; i < TEST_SIZE; i++) /* Get the elements of the test array. */
+    timeMicroSecFirst = micros();
+    for (int i = 0; i < TEST_SIZE; i++)
     {
         testValue = testArray[i];
     }
     timeMicroSecLast = micros();
-    timeIntervalArrayAccess = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to access the array. */
+    timeIntervalArrayAccess = timeMicroSecLast - timeMicroSecFirst;
 
-    timeMicroSecFirst = micros();                                                    /* Get the time before accessing the list. */
-    for (std::list<int>::iterator it = testList.begin(); it != testList.end(); it++) /* Get the elements of the test list. */
+    timeMicroSecFirst = micros();
+    for (std::list<int>::iterator it = testList.begin(); it != testList.end(); it++)
     {
         testValue = *it;
     }
     timeMicroSecLast = micros();
-    timeIntervalListAccess = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to access the list. */
+    timeIntervalListAccess = timeMicroSecLast - timeMicroSecFirst;
 
-    /**
-     * @note Test time requirements of inserting for different type of storages.
-     */
-
-    timeMicroSecFirst = micros();       /* Get the time before inserting into the vector. */
-    for (int i = 0; i < TEST_SIZE; i++) /* Insert the elements into the test vector. */
+    timeMicroSecFirst = micros();
+    for (int i = 0; i < TEST_SIZE; i++)
     {
         std::vector<int>::iterator itVec = testVector.begin() + TEST_SIZE / 2;
         testVector.insert(itVec, i);
     }
     timeMicroSecLast = micros();
-    timeIntervalVectorInsert = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to insert into the vector. */
+    timeIntervalVectorInsert = timeMicroSecLast - timeMicroSecFirst;
 
-    timeMicroSecFirst = micros();       /* Get the time before inserting into the list. */
-    for (int i = 0; i < TEST_SIZE; i++) /* Insert the elements into to the test list. */
+    timeMicroSecFirst = micros();
+    for (int i = 0; i < TEST_SIZE; i++)
     {
         std::list<int>::iterator itList = testList.begin();
         std::advance(itList, TEST_SIZE / 2);
         testList.insert(itList, i);
     }
     timeMicroSecLast = micros();
-    timeIntervalListInsert = timeMicroSecLast - timeMicroSecFirst; /* Calculate the eclapsed time to insert into the list. */
-
-    /**
-     * @note Print the results.
-     */
+    timeIntervalListInsert = timeMicroSecLast - timeMicroSecFirst;
 
     Serial.println("Vector filling time (uS) : " + String(timeIntervalVectorFill));
     Serial.println("Array filling time (uS) : " + String(timeIntervalArrayFill));
@@ -134,26 +115,8 @@ void setup()
     Serial.println("List access time (uS) : " + String(timeIntervalListAccess));
     Serial.println("Vector insert time (uS) : " + String(timeIntervalVectorInsert));
     Serial.println("List insert time (uS) : " + String(timeIntervalListInsert));
-
-    /**
-     * @note Here is an example result of calculations:
-     *
-     * Vector filling time (uS) : 485
-     * Array filling time (uS) : 28
-     * List filling time (uS) : 12474
-     *
-     * Vector access time (uS) : 21
-     * Array access time (uS) : 17
-     * List access time (uS) : 38
-     *
-     * Vector insert time (uS) : 168518
-     * List insert time (uS) : 30847
-     */
 }
 
-/**
- * @brief Application loop function.
- */
 void loop()
 {
     delay(5000);
